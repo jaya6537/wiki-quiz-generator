@@ -1,0 +1,51 @@
+{
+  "id": 1,
+  "url": "https://en.wikipedia.org/wiki/Alan_Turing",
+  "title": "Alan Turing",
+  "summary": "Alan Mathison Turing OBE FRS (/ˈtjʊərɪŋ/; 23 June 1912 – 7 June 1954) was an English mathematician, computer scientist, logician, cryptanalyst, philosopher and theoretical biologist.",
+  "key_entities": {
+    "people": ["Alan Turing", "Alonzo Church", "David Hilbert"],
+    "organizations": ["University of Cambridge", "Princeton University", "Bletchley Park"],
+    "locations": ["United Kingdom", "Manchester, England"]
+  },
+  "sections": ["Early life and education", "Career and research", "World War II", "Later life and death", "Legacy"],
+  "quiz": [
+    {
+      "question": "Where did Alan Turing study for his PhD?",
+      "options": [
+        "University of Cambridge",
+        "Princeton University",
+        "University of Oxford",
+        "Harvard University"
+      ],
+      "answer": "Princeton University",
+      "difficulty": "easy",
+      "explanation": "Mentioned in the 'Career and research' section."
+    },
+    {
+      "question": "What was Alan Turing's main contribution during World War II?",
+      "options": [
+        "Developing the atomic bomb",
+        "Breaking the Enigma code",
+        "Inventing radar",
+        "Creating the first computer"
+      ],
+      "answer": "Breaking the Enigma code",
+      "difficulty": "medium",
+      "explanation": "Detailed in the 'World War II' section at Bletchley Park."
+    },
+    {
+      "question": "What concept is Alan Turing most famous for in computer science?",
+      "options": [
+        "Turing Machine",
+        "Boolean Logic",
+        "Neural Networks",
+        "Quantum Computing"
+      ],
+      "answer": "Turing Machine",
+      "difficulty": "easy",
+      "explanation": "The Turing machine is a fundamental concept in computer science, described in his 1936 paper."
+    }
+  ],
+  "related_topics": ["Computer science", "Cryptography", "Artificial intelligence", "Enigma machine"]
+}
