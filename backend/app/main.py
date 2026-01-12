@@ -34,11 +34,15 @@ if vercel_url:
 # Only specific origins are allowed when credentials are enabled
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=cors_origins,
-    allow_credentials=True,
+    allow_origins=[
+        "http://localhost:3000",
+        "https://wiki-quiz-generator-pied.vercel.app",  # your actual Vercel domain
+    ],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Health check for Render
 @app.get("/")
