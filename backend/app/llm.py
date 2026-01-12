@@ -35,10 +35,10 @@ def generate_quiz_and_topics(content: str) -> dict:
         model = genai.GenerativeModel(
             model_name="gemini-2.5-flash",
             generation_config={
-                "temperature": 0.2,
-                "response_mime_type": "application/json"
+                "temperature": 0.2
             }
         )
+
 
         prompt = f"""
 You are a strict JSON generator.
@@ -219,10 +219,11 @@ def generate_dynamic_fallback(content: str) -> dict:
         related_topics.append("Computer Science")
     
     return {
-        "key_points": key_points[:6],  # Limit to 6
+        "summary": first_sentence.strip(),
         "quiz": quiz,
-        "related_topics": related_topics[:5]  # Limit to 5
+        "related_topics": related_topics[:5]
     }
+
 
 
 # Test the API key when this module is run directly
