@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Dict, Any, Optional
+from typing import List, Optional
 from datetime import datetime
 
 class GenerateQuizRequest(BaseModel):
@@ -16,14 +16,20 @@ class QuizResponse(BaseModel):
     id: int
     url: str
     title: str
-    sections: List[str]
+    sections: Optional[List[str]] = None
     summary: str
     quiz: List[QuizItem]
     related_topics: List[str]
-    created_at: datetime
+    created_at: Optional[datetime] = None
+
+    class Config:
+        orm_mode = True
 
 class QuizListItem(BaseModel):
     id: int
     url: str
     title: str
-    created_at: datetime
+    created_at: Optional[datetime] = None
+
+    class Config:
+        orm_mode = True
