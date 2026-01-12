@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import config from '../config';
 
 function QuizHistory({ onShowDetails }) {
   const [quizzes, setQuizzes] = useState([]);
@@ -21,7 +22,7 @@ function QuizHistory({ onShowDetails }) {
 
   const fetchQuizzes = async () => {
     try {
-      const response = await axios.get('http://localhost:8001/quizzes');
+      const response = await axios.get(config.ENDPOINTS.GET_QUIZZES);
       setQuizzes(response.data);
     } catch (err) {
       console.error('Failed to fetch quizzes:', err);
@@ -35,7 +36,7 @@ function QuizHistory({ onShowDetails }) {
     
     if (!quiz.quiz) {
       try {
-        const response = await axios.get(`http://localhost:8001/quiz/${quiz.id}`);
+        const response = await axios.get(config.ENDPOINTS.GET_QUIZ(quiz.id));
         setSelectedQuiz(response.data);
       } catch (err) {
         console.error('Failed to fetch quiz details:', err);

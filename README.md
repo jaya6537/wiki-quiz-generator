@@ -85,55 +85,117 @@ Each question object should have: "question", "options" (array), "answer", "diff
 
 Uses SQLite (wiki_quiz.db) for local development. PostgreSQL is used in production (Render).
 
-## Deployment to Render
+## Deployment Guide
 
-### Prerequisites
+### Step 1: Push to GitHub
 
-1. A GitHub account with this repository
-2. A Render account (free tier available)
-3. A Gemini API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+1. **Initialize Git** (if not already done):
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   ```
 
-### Steps
+2. **Create a new repository on GitHub**:
+   - Go to https://github.com/new
+   - Name it `wiki-quiz-generator`
+   - Don't initialize with README (we already have one)
+   - Click "Create repository"
 
-1. **Push your code to GitHub** (already done if you're reading this)
+3. **Push to GitHub**:
+   ```bash
+   git remote add origin https://github.com/YOUR_USERNAME/wiki-quiz-generator.git
+   git branch -M main
+   git push -u origin main
+   ```
 
-2. **Create a Render account** and connect your GitHub repository
+### Step 2: Deploy Backend to Render
 
-3. **Create a PostgreSQL Database**:
-   - In Render dashboard, click "New +" → "PostgreSQL"
-   - Name it `wiki-quiz-db`
-   - Select the free plan
-   - Note: The database will be automatically linked via `render.yaml`
+#### Prerequisites
+- GitHub repository (from Step 1)
+- Render account: https://render.com
+- Gemini API key: https://aistudio.google.com/app/apikey
 
-4. **Deploy the Web Service**:
-   - Option A: Use `render.yaml` (recommended)
-     - In Render dashboard, click "New +" → "Blueprint"
-     - Connect your GitHub repository
-     - Render will automatically detect `render.yaml` and deploy
-   - Option B: Manual setup
-     - Click "New +" → "Web Service"
-     - Connect your GitHub repository
-     - Settings:
-       - **Name**: `wiki-quiz-backend`
-       - **Environment**: `Python 3`
-       - **Build Command**: `pip install -r backend/requirements.txt`
-       - **Start Command**: `cd backend && python run.py`
-       - **Plan**: Free (or upgrade for production)
+#### Option A: Using Blueprint (Recommended)
 
-5. **Set Environment Variables**:
-   - In your Render service settings, add:
-     - `GEMINI_API_KEY`: Your Google Gemini API key
-     - `DATABASE_URL`: Automatically set by Render if using PostgreSQL database
+1. Go to https://dashboard.render.com
+2. Click "New +" → "Blueprint"
+3. Connect your GitHub account and select `wiki-quiz-generator`
+4. Render will detect `render.yaml` and create:
+   - PostgreSQL database (`wiki-quiz-db`)
+   - Web service (`wiki-quiz-backend`)
+5. **Add Environment Variable**:
+   - Go to your web service → Environment tab
+   - Add `GEMINI_API_KEY` with your API key value
+   - Click "Save Changes"
+6. Wait for deployment to complete
+7. **Note your backend URL**: `https://wiki-quiz-backend.onrender.com` (or your custom name)
 
-6. **Update Frontend**:
-   - Update your frontend API URL to point to your Render backend URL
-   - Example: `https://wiki-quiz-backend.onrender.com`
+#### Option B: Manual Setup
 
-### Environment Variables
+1. **Create PostgreSQL Database**:
+   - Click "New +" → "PostgreSQL"
+   - Name: `wiki-quiz-db`
+   - Plan: Free
+   - Click "Create Database"
+   - Copy the "Internal Database URL"
 
-- `GEMINI_API_KEY`: Required - Your Google Gemini API key
-- `DATABASE_URL`: Automatically provided by Render for PostgreSQL
-- `PORT`: Automatically set by Render (defaults to 8001 locally)
+2. **Create Web Service**:
+   - Click "New +" → "Web Service"
+   - Connect your GitHub repository
+   - Settings:
+     - **Name**: `wiki-quiz-backend`
+     - **Environment**: `Python 3`
+     - **Region**: Choose closest to you
+     - **Branch**: `main` (or `master`)
+     - **Root Directory**: (leave empty)
+     - **Build Command**: `pip install -r backend/requirements.txt`
+     - **Start Command**: `cd backend && python run.py`
+     - **Plan**: Free
+   - Click "Create Web Service"
+
+3. **Add Environment Variables**:
+   - Go to Environment tab
+   - Add:
+     - Key: `GEMINI_API_KEY`, Value: (your API key)
+     - Key: `DATABASE_URL`, Value: (from PostgreSQL database)
+   - Click "Save Changes"
+
+4. Wait for deployment to complete
+5. **Note your backend URL**: `https://wiki-quiz-backend.onrender.com`
+
+### Step 3: Deploy Frontend to Vercel
+
+1. **Go to Vercel**: https://vercel.com
+2. **Sign up/Login** with GitHub
+3. **Import Project**:
+   - Click "Add New..." → "Project"
+   - Select your `wiki-quiz-generator` repository
+   - Configure:
+     - **Framework Preset**: Create React App
+     - **Root Directory**: `frontend`
+     - **Build Command**: `npm run build`
+     - **Output Directory**: `build`
+4. **Add Environment Variable**:
+   - Go to Settings → Environment Variables
+   - Add:
+     - Key: `REACT_APP_API_URL`
+     - Value: `https://wiki-quiz-backend.onrender.com` (your Render backend URL)
+   - Click "Save"
+5. **Deploy**:
+   - Click "Deploy"
+   - Wait for deployment to complete
+   - Your frontend will be live at: `https://your-project.vercel.app`
+
+### Environment Variables Summary
+
+**Render (Backend)**:
+- `GEMINI_API_KEY`: Your Google Gemini API key (required)
+- `DATABASE_URL`: Automatically set by Render for PostgreSQL
+- `PORT`: Automatically set by Render
+
+**Vercel (Frontend)**:
+- `REACT_APP_API_URL`: Your Render backend URL (e.g., `https://wiki-quiz-backend.onrender.com`)
 
 ## Testing
 

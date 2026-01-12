@@ -10,6 +10,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import ArticleIcon from '@mui/icons-material/Article';
 import QuizIcon from '@mui/icons-material/Quiz';
 import QuizView from './QuizView';
+import config from '../config';
 
 function GenerateQuiz({ currentQuiz, loading, onGenerate, onLoading, onError }) {
   const [url, setUrl] = useState('');
@@ -60,7 +61,7 @@ function GenerateQuiz({ currentQuiz, loading, onGenerate, onLoading, onError }) 
       setCurrentStep('🧠 Generating quiz questions...');
       setProgress(80);
 
-      const response = await axios.post('http://localhost:8001/generate-quiz', { url });
+      const response = await axios.post(config.ENDPOINTS.GENERATE_QUIZ, { url });
 
       clearInterval(progressInterval);
       setProgress(100);
