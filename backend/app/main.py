@@ -13,7 +13,6 @@ def startup_event():
     models.Base.metadata.create_all(bind=database.engine)
 
 # CORS middleware (allow Vercel + local dev + Render)
-import os
 cors_origins = [
     "http://localhost:3000",
     "https://wiki-quiz-generator.vercel.app",  # replace with your Vercel domain
@@ -22,9 +21,17 @@ cors_origins = [
 render_url = os.getenv("RENDER_EXTERNAL_URL")
 if render_url:
     cors_origins.append(render_url)
-# Allow all origins during development (you can tighten later)
-cors_origins.append("*")
+# Add Vercel frontend URL from environment if provided
+vercel_url = os.getenv("VERCEL_URL")
+if vercel_url:
+    # Vercel provides URL without https://, so add it
+    if not vercel_url.startswith("http"):
+        vercel_url = f"https://{vercel_url}"
+    if vercel_url not in cors_origins:
+        cors_origins.append(vercel_url)
 
+# Note: We cannot use wildcard "*" with allow_credentials=True
+# Only specific origins are allowed when credentials are enabled
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,

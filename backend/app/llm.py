@@ -106,34 +106,6 @@ def validate_quiz_data(data: dict):
             raise ValueError("Answer must match one of the options exactly")
 
 def generate_dynamic_fallback(content: str) -> dict:
-    """Generate dynamic fallback quiz based on article content"""
-    # Extract some basic info from content
-    words = content.split()
-    title_guess = " ".join(words[:5]) if words else "Article"
-
-    return {
-        "summary": f"This article discusses {title_guess}... (AI generation failed - using fallback)",
-        "quiz": [
-            {
-                "question": f"What is the main topic discussed in this article about {title_guess}?",
-                "options": ["Topic A", "Topic B", "Topic C", "Topic D"],
-                "answer": "Topic A",
-                "difficulty": "easy",
-                "explanation": "This is a fallback question since AI generation failed."
-            },
-            {
-                "question": "Which of the following is mentioned in the article?",
-                "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
-                "answer": "Option 1",
-                "difficulty": "medium",
-                "explanation": "Fallback question due to API issues."
-            }
-        ],
-        "related_topics": ["Topic 1", "Topic 2", "Topic 3"]
-    }
-
-
-def generate_dynamic_fallback(content: str) -> dict:
     """Generate dynamic fallback content based on article analysis"""
     import re
     
