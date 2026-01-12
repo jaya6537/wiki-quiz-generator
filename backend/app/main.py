@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+import os
 from . import models, schemas, crud, database
 from .scraper import scrape_wikipedia
 from .llm import generate_quiz_and_topics
@@ -11,14 +12,22 @@ app = FastAPI(title="Wiki Quiz Generator API")
 def startup_event():
     models.Base.metadata.create_all(bind=database.engine)
 
-# CORS middleware (allow Vercel + local dev)
+# CORS middleware (allow Vercel + local dev + Render)
+import os
+cors_origins = [
+    "http://localhost:3000",
+    "https://wiki-quiz-generator.vercel.app",  # replace with your Vercel domain
+]
+# Add Render backend URL if provided
+render_url = os.getenv("RENDER_EXTERNAL_URL")
+if render_url:
+    cors_origins.append(render_url)
+# Allow all origins during development (you can tighten later)
+cors_origins.append("*")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "https://wiki-quiz-generator.vercel.app",  # replace with your Vercel domain
-        "*",  # during development; you can tighten later
-    ],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

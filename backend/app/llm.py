@@ -3,10 +3,10 @@ import json
 import os
 import re
 
-# Set your Gemini API key
+# Set your Gemini API key from environment variable
 # Replace with your actual API key from https://makersuite.google.com/app/apikey
 # You can get a free API key from Google AI Studio
-api_key = "AIzaSyCZYAIyuQxDKKdueZms40YOMNwYlKi7sXo"
+api_key = os.getenv("GEMINI_API_KEY", "")
 if not api_key:
     print("❌ ERROR: GEMINI_API_KEY environment variable is not set!")
     print("📝 To get an API key:")

@@ -83,7 +83,57 @@ Each question object should have: "question", "options" (array), "answer", "diff
 
 ## Database
 
-Uses SQLite (wiki_quiz.db) for simplicity. Tables are created automatically.
+Uses SQLite (wiki_quiz.db) for local development. PostgreSQL is used in production (Render).
+
+## Deployment to Render
+
+### Prerequisites
+
+1. A GitHub account with this repository
+2. A Render account (free tier available)
+3. A Gemini API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+
+### Steps
+
+1. **Push your code to GitHub** (already done if you're reading this)
+
+2. **Create a Render account** and connect your GitHub repository
+
+3. **Create a PostgreSQL Database**:
+   - In Render dashboard, click "New +" → "PostgreSQL"
+   - Name it `wiki-quiz-db`
+   - Select the free plan
+   - Note: The database will be automatically linked via `render.yaml`
+
+4. **Deploy the Web Service**:
+   - Option A: Use `render.yaml` (recommended)
+     - In Render dashboard, click "New +" → "Blueprint"
+     - Connect your GitHub repository
+     - Render will automatically detect `render.yaml` and deploy
+   - Option B: Manual setup
+     - Click "New +" → "Web Service"
+     - Connect your GitHub repository
+     - Settings:
+       - **Name**: `wiki-quiz-backend`
+       - **Environment**: `Python 3`
+       - **Build Command**: `pip install -r backend/requirements.txt`
+       - **Start Command**: `cd backend && python run.py`
+       - **Plan**: Free (or upgrade for production)
+
+5. **Set Environment Variables**:
+   - In your Render service settings, add:
+     - `GEMINI_API_KEY`: Your Google Gemini API key
+     - `DATABASE_URL`: Automatically set by Render if using PostgreSQL database
+
+6. **Update Frontend**:
+   - Update your frontend API URL to point to your Render backend URL
+   - Example: `https://wiki-quiz-backend.onrender.com`
+
+### Environment Variables
+
+- `GEMINI_API_KEY`: Required - Your Google Gemini API key
+- `DATABASE_URL`: Automatically provided by Render for PostgreSQL
+- `PORT`: Automatically set by Render (defaults to 8001 locally)
 
 ## Testing
 
