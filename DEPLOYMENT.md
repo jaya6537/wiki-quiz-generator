@@ -177,6 +177,11 @@ If Blueprint doesn't work:
 **Problem**: Database connection error
 - **Solution**: Make sure `DATABASE_URL` is linked to your PostgreSQL database in Render
 
+**Problem**: `OperationalError: could not translate host name "..." to address`
+- **Solution**: Confirm `DATABASE_URL` is a full connection string and not truncated. Example:
+  - `postgres://user:password@dpg-d5iivii4d50c739p0i80-a.region.postgres.render.com:5432/dbname`
+  - In Render, re-attach the database from your service's Environment tab with "Link" instead of manual values.
+
 ### Frontend Issues
 
 **Problem**: Frontend can't connect to backend (CORS error)
